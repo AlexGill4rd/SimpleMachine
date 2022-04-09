@@ -1,0 +1,20 @@
+name: SimpleMachine
+version: '1.0'
+main: simplemachine.simplemachine.SimpleMachine
+authors: [ KingDev ]
+description: SimpleMachine is a plugin to create simple machines on your minecraft server
+permissions:
+  SMachine.*:
+    children:
+      SMachine.itemgenerator:
+        children:
+          SMachine.itemgenerator.place:
+            description: Permission to allow the player to place a itemgenerator
+            default: true
+          SMachine.itemgenerator.interact:
+            description: Permission to allow the player to open the itemgenerator menu
+            default: true
+permission-message: You do not have permission to use this command.
+commands:
+  machine:
+    description: Command to receive information about all plugin's cammands.
