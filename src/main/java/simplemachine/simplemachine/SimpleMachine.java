@@ -11,6 +11,7 @@ import simplemachine.simplemachine.Components.Machine;
 import simplemachine.simplemachine.Data.Configs;
 import simplemachine.simplemachine.Listeners.BlockInteractListener;
 import simplemachine.simplemachine.Listeners.BlockPlaceListener;
+import simplemachine.simplemachine.Listeners.InventoryListeners.ItemGeneratorInventoryClickListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ public final class SimpleMachine extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new BlockInteractListener(), this);
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
+        getServer().getPluginManager().registerEvents(new ItemGeneratorInventoryClickListener(), this);
 
         this.getCommand("machine").setExecutor(new MachineCommand());
 
@@ -47,7 +49,7 @@ public final class SimpleMachine extends JavaPlugin {
             Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Items.Generate", machine.getItemGenerator().getGenerateItem());
             Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Items.Fuel", machine.getItemGenerator().getFuelItem());
             Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Settings.Fuellevel", machine.getItemGenerator().getFuelLevel());
-            Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Settings.ProductionSpeed", machine.getItemGenerator().getProductionSpeed());
+            Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Settings.ProductionSpeed", machine.getItemGenerator().getItemsPerHour());
             Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Settings.Enabled", machine.getItemGenerator().isEnabled());
             Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Settings.Location", convertLocationToString(machine.getItemGenerator().getLocation()));
             Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Statistics.FuelUsed", machine.getItemGenerator().getStatFuelUsed());

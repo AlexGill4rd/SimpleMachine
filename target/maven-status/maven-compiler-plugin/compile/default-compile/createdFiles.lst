@@ -4,7 +4,6 @@ simplemachine\simplemachine\Tools\Cuboid$CuboidDirection.class
 simplemachine\simplemachine\Tools\Functies.class
 simplemachine\simplemachine\Listeners\BlockPlaceListener.class
 simplemachine\simplemachine\Components\ItemGenerator.class
-simplemachine\simplemachine\Components\Collector.class
 simplemachine\simplemachine\Components\GenerateItem.class
 simplemachine\simplemachine\Components\GenerateItem$1.class
 simplemachine\simplemachine\Tools\Cuboid$1.class
@@ -12,9 +11,13 @@ simplemachine\simplemachine\Data\Configs.class
 simplemachine\simplemachine\GUI\ItemGeneratorInventory.class
 simplemachine\simplemachine\Materials\Materials.class
 simplemachine\simplemachine\Components\Conveyor.class
+simplemachine\simplemachine\Listeners\InventoryListeners\ItemGeneratorInventoryClickListener.class
 simplemachine\simplemachine\Tools\Cuboid.class
 simplemachine\simplemachine\Commands\MachineCommand.class
 simplemachine\simplemachine\Components\Machine.class
+simplemachine\simplemachine\Listeners\InventoryListeners\ItemGeneratorInventoryClickListener$1.class
+simplemachine\simplemachine\Components\Collector.class
+simplemachine\simplemachine\GUI\ItemGeneratorSpeedModifyInventory.class
 simplemachine\simplemachine\GUI\Inventories.class
 simplemachine\simplemachine\Tools\Cuboid$CuboidIterator.class
 simplemachine\simplemachine\Components\ItemGenerator$1.class

@@ -14,6 +14,9 @@ permissions:
           SMachine.itemgenerator.interact:
             description: Permission to allow the player to open the itemgenerator menu
             default: true
+          SMachine.itemgenerator.change:
+            description: The permission to modify the values of an item generator
+            default: false
 permission-message: You do not have permission to use this command.
 commands:
   machine:

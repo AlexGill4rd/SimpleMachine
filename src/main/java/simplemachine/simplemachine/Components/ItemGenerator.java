@@ -16,7 +16,7 @@ public class ItemGenerator {
     private ItemStack generateItem = createItemstack(Material.BARRIER, "§7none", null);
     private ItemStack fuelItem = defaultMachineFuel;
     private float fuelLevel = 100;
-    private float productionSpeed = 0;
+    private float itemsPerHour = 3600;
     private boolean enabled = false;
 
     private Location location;
@@ -31,11 +31,11 @@ public class ItemGenerator {
 
     public ItemGenerator(){}
 
-    public ItemGenerator(ItemStack generateItem, ItemStack fuelItem, float fuelLevel, float productionSpeed, boolean enabled, Location location, float statFuelUsed, float statItemsProduced, long statItemGeneratorAge){
+    public ItemGenerator(ItemStack generateItem, ItemStack fuelItem, float fuelLevel, float itemsPerHour, boolean enabled, Location location, float statFuelUsed, float statItemsProduced, long statItemGeneratorAge){
         this.generateItem = generateItem;
         this.fuelItem = fuelItem;
         this.fuelLevel = fuelLevel;
-        this.productionSpeed = productionSpeed;
+        this.itemsPerHour = itemsPerHour;
         this.enabled = enabled;
         this.location = location;
         this.statFuelUsed = statFuelUsed;
@@ -74,11 +74,11 @@ public class ItemGenerator {
         this.fuelLevel = fuelLevel;
     }
 
-    public float getProductionSpeed() {
-        return productionSpeed;
+    public float getItemsPerHour() {
+        return itemsPerHour;
     }
-    public void setProductionSpeed(float productionSpeed) {
-        this.productionSpeed = productionSpeed;
+    public void setItemsPerHour(float itemsPerHour) {
+        this.itemsPerHour = itemsPerHour;
     }
 
     public boolean isEnabled() {
@@ -114,14 +114,15 @@ public class ItemGenerator {
         this.location = location;
     }
 
-    void startItemGenerator() {
-        if (isReady(this)){
+    public void startItemGenerator() {
+        enabled = true;
+        if (isReady()){
             Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
                 @Override
                 public void run() {
                     generateItem();
                 }
-            }, (long) (20 * productionSpeed), (long) (20 * productionSpeed));
+            }, (long) (20 * itemsPerHour), (long) (20 * itemsPerHour));
         }
     }
     void generateItem() {
@@ -130,11 +131,11 @@ public class ItemGenerator {
         generateItem.create();
         generateItem.startRouting();
     }
-    public boolean isReady(ItemGenerator itemGenerator) {
+    public boolean isReady() {
         return generateItem != null &&
                 fuelItem != null &&
                 fuelLevel != 0 &&
-                productionSpeed != 0 &&
+                itemsPerHour != 0 &&
                 enabled;
     }
 }
