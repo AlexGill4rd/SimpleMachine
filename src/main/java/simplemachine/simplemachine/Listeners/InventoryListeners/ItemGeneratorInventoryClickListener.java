@@ -38,12 +38,12 @@ public class ItemGeneratorInventoryClickListener implements Listener {
                     player.closeInventory();
                     break;
                 case GREEN_SHULKER_BOX:
-                    machine.getItemGenerator().startItemGenerator();
+                    machine.getItemGenerator().start();
                     player.sendMessage(getMessage("Item Generator Started"));
                     player.closeInventory();
                     break;
                 case RED_SHULKER_BOX:
-                    machine.getItemGenerator().startItemGenerator();
+                    machine.getItemGenerator().stop();
                     player.sendMessage(getMessage("Item Generator Stopped"));
                     player.closeInventory();
                     break;

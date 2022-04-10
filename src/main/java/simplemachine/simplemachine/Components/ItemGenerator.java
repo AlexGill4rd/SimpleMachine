@@ -13,7 +13,7 @@ public class ItemGenerator {
 
     private final ItemStack itemGeneratorItemstack = createItemstack(itemGeneratorMaterial, "§7§l* §6Item Generator §7§l*", createArraylist("§8§l§m------", "§7Place this item to create a §6ITEM GENERATOR", "§fRight-Click §8- §7To place down", "§8§l§m------"));
 
-    private ItemStack generateItem = createItemstack(Material.BARRIER, "§7none", null);
+    private ItemStack product = createItemstack(Material.BARRIER, "§7none", null);
     private ItemStack fuelItem = defaultMachineFuel;
     private float fuelLevel = 100;
     private float itemsPerHour = 3600;
@@ -32,7 +32,7 @@ public class ItemGenerator {
     public ItemGenerator(){}
 
     public ItemGenerator(ItemStack generateItem, ItemStack fuelItem, float fuelLevel, float itemsPerHour, boolean enabled, Location location, float statFuelUsed, float statItemsProduced, long statItemGeneratorAge){
-        this.generateItem = generateItem;
+        this.product = generateItem;
         this.fuelItem = fuelItem;
         this.fuelLevel = fuelLevel;
         this.itemsPerHour = itemsPerHour;
@@ -53,11 +53,11 @@ public class ItemGenerator {
         return itemGeneratorItemstack;
     }
 
-    public ItemStack getGenerateItem() {
-        return generateItem;
+    public ItemStack getProduct() {
+        return product;
     }
-    public void setGenerateItem(ItemStack generateItem) {
-        this.generateItem = generateItem;
+    public void setProduct(ItemStack product) {
+        this.product = product;
     }
 
     public ItemStack getFuelItem() {
@@ -98,8 +98,11 @@ public class ItemGenerator {
     public float getStatItemsProduced() {
         return statItemsProduced;
     }
-    public void setStatItemsProduced(float statItemsProduced) {
+    public void setStatItemsProduced(long statItemsProduced) {
         this.statItemsProduced = statItemsProduced;
+    }
+    public void addStatItemsProduced(long amount) {
+        this.statItemsProduced += amount;
     }
 
     public long getStatItemGeneratorAge() {
@@ -114,25 +117,28 @@ public class ItemGenerator {
         this.location = location;
     }
 
-    public void startItemGenerator() {
+    private int producing;
+    public void start() {
         enabled = true;
         if (isReady()){
-            Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    generateItem();
-                }
-            }, (long) (20 * itemsPerHour), (long) (20 * itemsPerHour));
+            producing = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+                if (!enabled) {
+                    Bukkit.getScheduler().cancelTask(producing);
+                }else generateItem();
+            }, 0, (long) (itemsPerHour / 60 / 60) * 20);
         }
     }
+    public void stop(){
+        enabled = false;
+    }
     void generateItem() {
-        GenerateItem generateItem = new GenerateItem(this.generateItem, this);
+        GenerateItem generateItem = new GenerateItem(this.product, this);
         generateItem.setMachine(machine);
         generateItem.create();
         generateItem.startRouting();
     }
     public boolean isReady() {
-        return generateItem != null &&
+        return product != null &&
                 fuelItem != null &&
                 fuelLevel != 0 &&
                 itemsPerHour != 0 &&

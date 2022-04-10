@@ -46,7 +46,7 @@ public final class SimpleMachine extends JavaPlugin {
         for (Machine machine : machineHashMap.values()){
             //SAVE ITEMGENERATOR
             String machineLocString = convertLocationToString(machine.getLocation());
-            Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Items.Generate", machine.getItemGenerator().getGenerateItem());
+            Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Items.Generate", machine.getItemGenerator().getProduct());
             Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Items.Fuel", machine.getItemGenerator().getFuelItem());
             Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Settings.Fuellevel", machine.getItemGenerator().getFuelLevel());
             Configs.getCustomConfig2().set("Machines." + machineLocString + ".ItemGenerator.Settings.ProductionSpeed", machine.getItemGenerator().getItemsPerHour());

@@ -6,20 +6,23 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import simplemachine.simplemachine.Components.Generator.Direction;
 import simplemachine.simplemachine.SimpleMachine;
 import simplemachine.simplemachine.Tools.Cuboid;
 
 import java.util.ArrayList;
 
 import static simplemachine.simplemachine.Materials.Materials.*;
+import static simplemachine.simplemachine.Tools.Functies.convertLocationToString;
 
 public class GenerateItem {
 
     private ItemStack itemstack;
     private ArmorStand armorStandItem;
     private Location location;
-    private ArrayList<Conveyor> conveyors = new ArrayList<>();
+    private ArrayList<String> conveyors = new ArrayList<>();
     private final int maxLength = 100;
+    private Direction direction;
 
     private int routingID;
 
@@ -28,7 +31,7 @@ public class GenerateItem {
 
     public GenerateItem(ItemStack itemStack, ItemGenerator itemGenerator){
         this.itemstack = itemStack;
-        this.location = itemGenerator.getLocation();
+        this.location = itemGenerator.getLocation().clone().add(0.5, 0, 0.5);
     }
 
     public Machine getMachine() {
@@ -52,18 +55,11 @@ public class GenerateItem {
         this.armorStandItem = armorStandItem;
     }
 
-    public Location getLocation() {
+    public final Location getLocation() {
         return location;
     }
     public void setLocation(Location location) {
         this.location = location;
-    }
-
-    public ArrayList<Conveyor> getConveyors() {
-        return conveyors;
-    }
-    public void setConveyors(ArrayList<Conveyor> conveyors) {
-        this.conveyors = conveyors;
     }
 
     public int getMaxLength() {
@@ -83,21 +79,26 @@ public class GenerateItem {
         armorStand.setCustomNameVisible(false);
         armorStand.setHelmet(itemstack);
         armorStand.setGravity(false);
-        armorStand.setSmall(true);
         armorStand.setMarker(false);
-
+        armorStand.setSmall(true);
         this.armorStandItem = armorStand;
+
+        machine.getItemGenerator().addStatItemsProduced(1);
     }
     private Conveyor getNearConveyor(Location location){
-        if (location.clone().add(1, 0, 0).getBlock().getType() == conveyorMaterial)
-            return new Conveyor(location.clone().add(1, 0 , 0));
-        else if (location.clone().add(-1, 0, 0).getBlock().getType() == conveyorMaterial)
-            return new Conveyor(location.clone().add(-1, 0 , 0));
-        else if (location.clone().add(0, 0, 1).getBlock().getType() == conveyorMaterial)
-            return new Conveyor(location.clone().add(0, 0 , 1));
-        else if (location.clone().add(0, 0, -1).getBlock().getType() == conveyorMaterial)
-            return new Conveyor(location.clone().add(0, 0 , -1));
-        else return null;
+        if (location.clone().add(1, 0, 0).getBlock().getType() == conveyorMaterial && !conveyors.contains(convertLocationToString(location.clone().add(1, 0 , 0)))) {
+            direction = Direction.EAST;
+            return new Conveyor(location.clone().add(1, 0, 0));
+        }else if (location.clone().add(-1, 0, 0).getBlock().getType() == conveyorMaterial && !conveyors.contains(convertLocationToString(location.clone().add(-1, 0 , 0)))) {
+            direction = Direction.WEST;
+            return new Conveyor(location.clone().add(-1, 0, 0));
+        }else if (location.clone().add(0, 0, 1).getBlock().getType() == conveyorMaterial && !conveyors.contains(convertLocationToString(location.clone().add(0, 0 , 1)))) {
+            direction = Direction.SOUTH;
+            return new Conveyor(location.clone().add(0, 0, 1));
+        }else if (location.clone().add(0, 0, -1).getBlock().getType() == conveyorMaterial && !conveyors.contains(convertLocationToString(location.clone().add(0, 0 , -1)))) {
+            direction = Direction.NORTH;
+            return new Conveyor(location.clone().add(0, 0, -1));
+        }else return null;
     }
     public void determineRoute(Location location){
         Location routingLocation = location.clone();
@@ -105,7 +106,7 @@ public class GenerateItem {
         while (routingLocation != null || conveyorCount < maxLength){
             Conveyor conveyor = getNearConveyor(location);
             if (conveyor == null)routingLocation = null;
-            else conveyors.add(conveyor);
+            else conveyors.add(convertLocationToString(conveyor.getLocation()));
             conveyorCount += 1;
         }
     }
@@ -120,28 +121,36 @@ public class GenerateItem {
         return null;
     }
     public void startRouting(){
-        determineRoute(this.location);
         if (conveyors.size() > maxLength){
             machine.getItemGenerator().setEnabled(false);
             return;
         }
-        routingID = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-            Location routingLocation = getLocation().clone();
-            @Override
-            public void run() {
-                Conveyor conveyor = getNearConveyor(routingLocation);
-                if (conveyor == null){
-                    Collector collector = detectCollector(routingLocation);
-                    if (collector != null)
-                        collector.addStorageItem(itemstack);
-                    armorStandItem.remove();
-                    Bukkit.getScheduler().cancelTask(routingID);
-                } else {
-                    armorStandItem.teleport(conveyor.getLocation());
-                    routingLocation = conveyor.getLocation();
-                }
+        routingID = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            if (armorStandItem.isDead()){
+                Bukkit.getScheduler().cancelTask(routingID);
+                return;
             }
-        }, 0, 20);
+            Conveyor conveyor = getNearConveyor(armorStandItem.getLocation());
+            if (conveyor == null){
+                Collector collector = detectCollector(armorStandItem.getLocation());
+                if (collector != null)
+                    collector.addStorageItem(itemstack);
+                armorStandItem.remove();
+                Bukkit.getScheduler().cancelTask(routingID);
+            } else {
+                armorStandItem.teleport(getLocationWithRotation(conveyor.getLocation()));
+                conveyors.add(convertLocationToString(conveyor.getLocation()));
+            }
+        }, 20, 20);
     }
-
+    private Location getLocationWithRotation(Location locRot) {
+        float yaw = 0;
+        if (direction == Direction.NORTH) yaw = 180f;
+        else if (direction == Direction.EAST) yaw = -90f;
+        else if (direction == Direction.SOUTH) yaw = 0f;
+        else if (direction == Direction.WEST) yaw = 90f;
+        locRot.setYaw(yaw);
+        locRot.setPitch(yaw);
+        return locRot;
+    }
 }
