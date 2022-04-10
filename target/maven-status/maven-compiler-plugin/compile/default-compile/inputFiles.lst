@@ -1,5 +1,7 @@
 E:\Github\SimpleMachine\src\main\java\simplemachine\simplemachine\Components\Collector.java
+E:\Github\SimpleMachine\src\main\java\simplemachine\simplemachine\Components\Generator\Direction.java
 E:\Github\SimpleMachine\src\main\java\simplemachine\simplemachine\Components\GenerateItem.java
+E:\Github\SimpleMachine\src\main\java\simplemachine\simplemachine\GUI\ItemGeneratorSpeedModifyInventory.java
 E:\Github\SimpleMachine\src\main\java\simplemachine\simplemachine\Listeners\BlockInteractListener.java
 E:\Github\SimpleMachine\src\main\java\simplemachine\simplemachine\Components\Machine.java
 E:\Github\SimpleMachine\src\main\java\simplemachine\simplemachine\Tools\Functies.java
@@ -13,3 +15,4 @@ E:\Github\SimpleMachine\src\main\java\simplemachine\simplemachine\Commands\Machi
 E:\Github\SimpleMachine\src\main\java\simplemachine\simplemachine\SimpleMachine.java
 E:\Github\SimpleMachine\src\main\java\simplemachine\simplemachine\Tools\Cuboid.java
 E:\Github\SimpleMachine\src\main\java\simplemachine\simplemachine\Components\ItemGenerator.java
+E:\Github\SimpleMachine\src\main\java\simplemachine\simplemachine\Listeners\InventoryListeners\ItemGeneratorInventoryClickListener.java

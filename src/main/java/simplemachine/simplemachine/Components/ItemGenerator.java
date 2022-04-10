@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import simplemachine.simplemachine.SimpleMachine;
 
+import java.util.ArrayList;
+
 import static simplemachine.simplemachine.Materials.Materials.*;
 import static simplemachine.simplemachine.Tools.Functies.*;
 
@@ -19,6 +21,7 @@ public class ItemGenerator {
     private float itemsPerHour = 3600;
     private boolean enabled = false;
 
+    private ArrayList<GenerateItem> itemsActive = new ArrayList<>();
     private Location location;
 
     //STATS
@@ -109,6 +112,12 @@ public class ItemGenerator {
         return statItemGeneratorAge;
     }
 
+    public ArrayList<GenerateItem> getItemsActive() {
+        return itemsActive;
+    }
+    public void setItemsActive(ArrayList<GenerateItem> itemsActive) {
+        this.itemsActive = itemsActive;
+    }
 
     public Location getLocation() {
         return location;
@@ -136,6 +145,7 @@ public class ItemGenerator {
         generateItem.setMachine(machine);
         generateItem.create();
         generateItem.startRouting();
+        itemsActive.add(generateItem);
     }
     public boolean isReady() {
         return product != null &&

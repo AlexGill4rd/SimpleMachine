@@ -143,6 +143,9 @@ public class GenerateItem {
             }
         }, 20, 20);
     }
+    public void remove(){
+        armorStandItem.remove();
+    }
     private Location getLocationWithRotation(Location locRot) {
         float yaw = 0;
         if (direction == Direction.NORTH) yaw = 180f;

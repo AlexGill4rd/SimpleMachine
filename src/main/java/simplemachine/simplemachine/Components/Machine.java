@@ -10,7 +10,6 @@ public class Machine {
 
     private ItemGenerator itemGenerator = new ItemGenerator();
     private Collector collector = new Collector();
-    private ArrayList<Conveyor> conveyor = new ArrayList<>();
     private Location location;
     private boolean valid = false;
 
@@ -32,7 +31,6 @@ public class Machine {
         if (valid){
             this.itemGenerator = machineHashMap.get(location).getItemGenerator();
             this.collector = machineHashMap.get(location).getCollector();
-            this.conveyor = machineHashMap.get(location).getConveyor();
             this.itemGenerator.setMachine(this);
             this.collector.setMachine(this);
         }
@@ -57,12 +55,5 @@ public class Machine {
     }
     public void setCollector(Collector collector) {
         this.collector = collector;
-    }
-
-    public ArrayList<Conveyor> getConveyor() {
-        return conveyor;
-    }
-    public void setConveyor(ArrayList<Conveyor> conveyor) {
-        this.conveyor = conveyor;
     }
 }
