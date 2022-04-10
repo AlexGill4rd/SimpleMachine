@@ -73,6 +73,7 @@ public final class SimpleMachine extends JavaPlugin {
         if (!Configs.getCustomConfig2().contains("Machines"))return;
         for (String machineLocation : Configs.getCustomConfig2().getConfigurationSection("Machines").getKeys(false)){
             Machine machine = new Machine();
+            machine.setLocation(convertStringToLocation(machineLocation));
 
             ItemStack generateItem = Configs.getCustomConfig2().getItemStack("Machines." + machineLocation + ".ItemGenerator.Items.Generate");
             ItemStack fuelItem = Configs.getCustomConfig2().getItemStack("Machines." + machineLocation + ".ItemGenerator.Items.Fuel");

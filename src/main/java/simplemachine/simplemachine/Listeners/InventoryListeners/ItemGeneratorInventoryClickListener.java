@@ -19,11 +19,14 @@ public class ItemGeneratorInventoryClickListener implements Listener {
         if (e.getInventory().getTitle().equals("§7§l| §eItem Generator §7§l|")){
             e.setCancelled(true);
             Player player = (Player) e.getWhoClicked();
+            ItemStack clickedItem = e.getCurrentItem();
+
+            if (clickedItem == null)return;
             if (e.getClickedInventory() instanceof PlayerInventory)return;
 
             Machine machine = new Machine(convertStringToLocation(e.getInventory().getItem(7).getItemMeta().getLore().get(5).split(" ")[2]));
 
-            ItemStack clickedItem = e.getCurrentItem();
+
             switch (clickedItem.getType()){
                 case LAVA_BUCKET:
                     player.sendMessage(getMessage("Current Fuel Level"));
