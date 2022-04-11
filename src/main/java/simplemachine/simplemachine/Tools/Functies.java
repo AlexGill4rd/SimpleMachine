@@ -118,6 +118,29 @@ public class Functies {
         Collections.addAll(lines, args);
         return lines;
     }
+    public static ArrayList<String> createLore(String... args){
+        ArrayList<String> lines = new ArrayList<>();
+        for (String arg : args)
+            lines.addAll(splitString(arg, 40));
+        return lines;
+    }
+    public static ArrayList<String> splitString(String s, int length){
+        ArrayList<String> list = new ArrayList<>();
+        StringBuilder sentence = new StringBuilder();
+        String[] words = s.split(" ");
+        String latestColor = "§7";
+        for (String word : words) {
+            if (word.contains("§"))
+                latestColor = "§" + word.charAt(word.indexOf("§") + 1);
+            if (sentence.length() + word.length() + 1 > length) {
+                list.add(sentence.toString().trim());
+                sentence = new StringBuilder();
+                sentence.append(latestColor).append(word).append(" ");
+            } else sentence.append(latestColor).append(word).append(" ");
+        }
+        list.add(sentence.toString().trim());
+        return list;
+    }
     public static void fillInv(Inventory inventory, int color){
         for (int i = 0; i < inventory.getSize(); i++){
             ItemStack current = inventory.getItem(i);
@@ -130,12 +153,10 @@ public class Functies {
         return location.getWorld().getName() + "," + (int) location.getX() + "," + (int) location.getY() + "," + (int) location.getZ();
     }
     public static Location convertStringToLocation(String stringLoc){
-        String[] args = stringLoc.split(",");
-        if (args.length == 4){
+        String[] args = ChatColor.stripColor(color(stringLoc)).split(",");
+        if (args.length == 4)
             return new Location(Bukkit.getWorld(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]), 0, 0);
-        }else{
-            return null;
-        }
+        else return null;
     }
     public static void saveData(){
         try {

@@ -27,6 +27,18 @@ public class BlockPlaceListener implements Listener {
                     player.sendMessage(getMessage("Item Generator Placed"));
                 }
             }
+        }else if (e.getBlockPlaced().getType() == collectorMaterial){
+            if (hasPerm(player, "SMachine.collector.place")){
+                Location machineLocation = convertStringToLocation(player.getInventory().getItemInMainHand().getItemMeta().getLore().get(6));
+                Machine machine = new Machine(machineLocation);
+                System.out.println(machineLocation);
+                if (machine.isValid()){
+                    if (compareItemstack(machine.getCollector().getBlockItemstack(), player.getInventory().getItemInMainHand())){
+                        machine.getCollector().setLocation(e.getBlockPlaced().getLocation());
+                        player.sendMessage(getMessage("Item Generator Placed"));
+                    }
+                }else player.sendMessage(getMessage("Invalid Machine"));
+            }
         }
 
     }

@@ -3,8 +3,6 @@ package simplemachine.simplemachine.Components;
 import org.bukkit.Location;
 import simplemachine.simplemachine.Data.Configs;
 
-import java.util.ArrayList;
-
 import static simplemachine.simplemachine.SimpleMachine.machineHashMap;
 import static simplemachine.simplemachine.Tools.Functies.convertLocationToString;
 import static simplemachine.simplemachine.Tools.Functies.saveData;
@@ -21,7 +19,6 @@ public class Machine {
         this.location = location;
         checkValid();
     }
-
 
     public boolean isValid() {
         return this.valid;

@@ -1,15 +1,19 @@
 package simplemachine.simplemachine.Components;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+
+import static simplemachine.simplemachine.Tools.Functies.*;
 
 public class Collector {
 
     private Location location;
     private ArrayList<ItemStack> storage = new ArrayList<>();
     private Machine machine;
+    private ItemStack blockItemstack = createItemstack(Material.OBSERVER, "§7§l* §6Item §eCollector §7§l*", createLore("§7§l§m------", "§7Place this item at the end of your conveyor belt to collect the items.", "", "§6Machine Data: §4INVALID COLLECTOR", "§7§l§m------"));
 
     public Collector(){}
     public Collector(Location location){
@@ -38,5 +42,13 @@ public class Collector {
     }
     public void setMachine(Machine machine) {
         this.machine = machine;
+        blockItemstack = createItemstack(Material.OBSERVER, "§7§l* §6Item §eCollector §7§l*", createLore("§7§l§m------", "§7Place this item at the end of your conveyor belt to collect the items.", "", "§6Machine Data: §f" + convertLocationToString(machine.getLocation()), "§7§l§m------"));
+    }
+
+    public ItemStack getBlockItemstack() {
+        return blockItemstack;
+    }
+    public void setBlockItemstack(ItemStack blockItemstack) {
+        this.blockItemstack = blockItemstack;
     }
 }

@@ -6,6 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import simplemachine.simplemachine.Components.Machine;
 
+import java.util.Set;
+
 import static simplemachine.simplemachine.Materials.Materials.defaultMachineFuel;
 import static simplemachine.simplemachine.Tools.Functies.*;
 
@@ -22,7 +24,7 @@ public class MachineCommand implements CommandExecutor {
 
                 if (args.length == 0) {
                     if (hasPerm(player, "SMachine.command.machine.help")) {
-                        player.sendMessage("§6/Machine get §7{§efuel§6/§emachine§7} §8- §7Get the default machine");
+                        player.sendMessage("§6/Machine get §7{§efuel§6/§emachine§6/§ecollector§7} §8- §7Get sertain machine components");
                     }
                 }else if (args.length == 2){
                     if (args[0].equalsIgnoreCase("get")){
@@ -36,6 +38,14 @@ public class MachineCommand implements CommandExecutor {
                                 Machine machine = new Machine();
                                 player.getInventory().addItem(machine.getItemGenerator().getItemGeneratorItemstack());
                                 player.sendMessage(getMessage("Machine Received"));
+                            }
+                        }else if (args[1].equalsIgnoreCase("collector")){
+                            if (hasPerm(player, "SMachine.command.machine.get.collector")){
+                                Machine machine = new Machine(player.getTargetBlock(null, 5).getLocation());
+                                if (machine.isValid()){
+                                    player.getInventory().addItem(machine.getCollector().getBlockItemstack());
+                                    player.sendMessage(getMessage("Collector Received"));
+                                }else player.sendMessage(getMessage("Target Block Not Machine"));
                             }
                         }
                     }
