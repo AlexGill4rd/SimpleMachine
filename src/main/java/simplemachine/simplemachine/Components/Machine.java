@@ -1,10 +1,13 @@
 package simplemachine.simplemachine.Components;
 
 import org.bukkit.Location;
+import simplemachine.simplemachine.Data.Configs;
 
 import java.util.ArrayList;
 
 import static simplemachine.simplemachine.SimpleMachine.machineHashMap;
+import static simplemachine.simplemachine.Tools.Functies.convertLocationToString;
+import static simplemachine.simplemachine.Tools.Functies.saveData;
 
 public class Machine {
 
@@ -55,5 +58,11 @@ public class Machine {
     }
     public void setCollector(Collector collector) {
         this.collector = collector;
+    }
+
+    public void remove(){
+        Configs.getCustomConfig2().set("Machines." + convertLocationToString(this.getLocation()), null);
+        saveData();
+        machineHashMap.remove(this.getLocation());
     }
 }

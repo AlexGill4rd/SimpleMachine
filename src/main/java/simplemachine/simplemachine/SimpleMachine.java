@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import simplemachine.simplemachine.Commands.MachineCommand;
 import simplemachine.simplemachine.Components.*;
 import simplemachine.simplemachine.Data.Configs;
+import simplemachine.simplemachine.Listeners.BlockBreakListener;
 import simplemachine.simplemachine.Listeners.BlockInteractListener;
 import simplemachine.simplemachine.Listeners.BlockPlaceListener;
 import simplemachine.simplemachine.Listeners.InventoryListeners.ItemGeneratorInventoryClickListener;
@@ -30,6 +31,7 @@ public final class SimpleMachine extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockInteractListener(), this);
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
         getServer().getPluginManager().registerEvents(new ItemGeneratorInventoryClickListener(), this);
+        getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
 
         this.getCommand("machine").setExecutor(new MachineCommand());
 

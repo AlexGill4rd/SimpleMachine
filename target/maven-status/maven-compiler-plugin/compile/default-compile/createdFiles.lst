@@ -20,3 +20,4 @@ simplemachine\simplemachine\GUI\ItemGeneratorSpeedModifyInventory.class
 simplemachine\simplemachine\Components\Generator\Direction.class
 simplemachine\simplemachine\GUI\Inventories.class
 simplemachine\simplemachine\Tools\Cuboid$CuboidIterator.class
+simplemachine\simplemachine\Listeners\BlockBreakListener.class

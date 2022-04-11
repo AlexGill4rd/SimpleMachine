@@ -27,7 +27,6 @@ public class BlockInteractListener implements Listener {
                 e.setCancelled(true);
                 ItemGeneratorInventory itemGeneratorInventory = new ItemGeneratorInventory(player, machine);
                 itemGeneratorInventory.openItemGeneratorMenu();
-                player.sendMessage("sdf");
             }
         }
 

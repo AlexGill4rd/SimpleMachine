@@ -1,6 +1,7 @@
 Item Generator Placed: "&aYou have placed an item generator!"
 Item Generator Started: "&aYou have started the item generator!"
 Item Generator Stopped: "&aYou have stopped the item generator!"
+Item Generator Remove: "&cYou have removed the machine."
 Fuel Received: "&6You have received fuel in your inventory."
 Machine Received: "&6You have received a machine in your inventory."
 Current Fuel Level: "&6There is currently &f100% &6fuel in the machine."
