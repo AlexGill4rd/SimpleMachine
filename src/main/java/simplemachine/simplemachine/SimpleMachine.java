@@ -9,7 +9,7 @@ import simplemachine.simplemachine.Data.Configs;
 import simplemachine.simplemachine.Listeners.BlockBreakListener;
 import simplemachine.simplemachine.Listeners.BlockInteractListener;
 import simplemachine.simplemachine.Listeners.BlockPlaceListener;
-import simplemachine.simplemachine.Listeners.InventoryListeners.ItemGeneratorInventoryClickListener;
+import simplemachine.simplemachine.Listeners.InventoryListeners.InventoryClickListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public final class SimpleMachine extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new BlockInteractListener(), this);
         getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
-        getServer().getPluginManager().registerEvents(new ItemGeneratorInventoryClickListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
         getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
 
         this.getCommand("machine").setExecutor(new MachineCommand());
@@ -75,6 +75,7 @@ public final class SimpleMachine extends JavaPlugin {
                 if (machine.getCollector().getLocation() != null)
                     Configs.getCustomConfig2().set("Machines." + machineLocString + ".Collector.Location", convertLocationToString(machine.getCollector().getLocation()));
                 Configs.getCustomConfig2().set("Machines." + machineLocString + ".Collector.Storage", machine.getCollector().getStorage());
+                Configs.getCustomConfig2().set("Machines." + machineLocString + ".Collector.Statistics.ItemsCollected", machine.getCollector().getStatItemsCollected());
 
                 saveData();
             }
@@ -104,6 +105,7 @@ public final class SimpleMachine extends JavaPlugin {
                     collector.setLocation(convertStringToLocation(Configs.getCustomConfig2().getString("Machines." + machineLocation + ".Collector.Location")));
                 ArrayList<ItemStack> storageItems = (ArrayList<ItemStack>) Configs.getCustomConfig2().get("Machines." + machineLocation + ".Collector.Storage");
                 collector.setStorage(storageItems);
+                collector.setStatItemsCollected(Configs.getCustomConfig2().getInt("Machines." + machineLocation + ".Collector.Statistics.ItemsCollected"));
                 machine.setCollector(collector);
 
                 machineHashMap.put(convertStringToLocation(machineLocation), machine);

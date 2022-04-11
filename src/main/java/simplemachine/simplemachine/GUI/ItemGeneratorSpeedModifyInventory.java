@@ -18,7 +18,7 @@ public class ItemGeneratorSpeedModifyInventory {
         this.machine = machine;
     }
     public void openInventory(){
-        Inventory inventory = Bukkit.createInventory(null, 18, "§7§l| §eItem Generator §7- §8Production Speed §7§l|");
+        Inventory inventory = Bukkit.createInventory(null, 27, "§7§l| §eItem Generator §7- §8Production Speed §7§l|");
 
         fillColomnItemstack(inventory, 1, Material.ANVIL);
         fillColomnItemstack(inventory, 9, Material.ANVIL);

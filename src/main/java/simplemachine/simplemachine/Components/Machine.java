@@ -12,7 +12,7 @@ public class Machine {
     private ItemGenerator itemGenerator = new ItemGenerator();
     private Collector collector = new Collector();
     private Location location;
-    private boolean valid = false;
+    private boolean valid = true;
 
     public Machine() {}
     public Machine(Location location){

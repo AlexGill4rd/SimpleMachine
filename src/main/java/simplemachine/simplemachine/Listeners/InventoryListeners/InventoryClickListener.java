@@ -11,21 +11,21 @@ import simplemachine.simplemachine.GUI.ItemGeneratorSpeedModifyInventory;
 
 import static simplemachine.simplemachine.Tools.Functies.*;
 
-public class ItemGeneratorInventoryClickListener implements Listener {
+public class InventoryClickListener implements Listener {
 
     @EventHandler
-    public void onInventoryClickItemGenerator(InventoryClickEvent e){
+    public void onInventoryClick(InventoryClickEvent e){
+
+        Player player = (Player) e.getWhoClicked();
+        ItemStack clickedItem = e.getCurrentItem();
+
+        if (clickedItem == null)return;
+        if (e.getClickedInventory() instanceof PlayerInventory)return;
 
         if (e.getInventory().getTitle().equals("§7§l| §eItem Generator §7§l|")){
             e.setCancelled(true);
-            Player player = (Player) e.getWhoClicked();
-            ItemStack clickedItem = e.getCurrentItem();
-
-            if (clickedItem == null)return;
-            if (e.getClickedInventory() instanceof PlayerInventory)return;
 
             Machine machine = new Machine(convertStringToLocation(e.getInventory().getItem(7).getItemMeta().getLore().get(5).split(" ")[2]));
-
 
             switch (clickedItem.getType()){
                 case LAVA_BUCKET:
@@ -51,9 +51,35 @@ public class ItemGeneratorInventoryClickListener implements Listener {
                     player.closeInventory();
                     break;
             }
+        }else if (e.getInventory().getTitle().equals("§7§l| §7§lCollector §7- §8Main menu §7§l|")){
+            e.setCancelled(true);
 
+            Machine machine = new Machine(convertStringToLocation(e.getInventory().getItem(7).getItemMeta().getLore().get(5).split(" ")[2]));
+
+            switch (clickedItem.getType()){
+                case LAVA_BUCKET:
+                    player.sendMessage(getMessage("Current Fuel Level"));
+                    break;
+                case FEATHER:
+                    if (player.hasPermission("SMachine.itemgenerator.change")){
+                        ItemGeneratorSpeedModifyInventory itemGeneratorSpeedModifyInventory = new ItemGeneratorSpeedModifyInventory(player, machine);
+                        itemGeneratorSpeedModifyInventory.openInventory();
+                    }
+                    break;
+                case ARROW:
+                    player.closeInventory();
+                    break;
+                case GREEN_SHULKER_BOX:
+                    machine.getItemGenerator().start();
+                    player.sendMessage(getMessage("Item Generator Started"));
+                    player.closeInventory();
+                    break;
+                case RED_SHULKER_BOX:
+                    machine.getItemGenerator().stop();
+                    player.sendMessage(getMessage("Item Generator Stopped"));
+                    player.closeInventory();
+                    break;
+            }
         }
-
     }
-
 }

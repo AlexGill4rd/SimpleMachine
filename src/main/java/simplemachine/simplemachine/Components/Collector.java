@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
+import static simplemachine.simplemachine.SimpleMachine.machineHashMap;
 import static simplemachine.simplemachine.Tools.Functies.*;
 
 public class Collector {
@@ -15,9 +16,25 @@ public class Collector {
     private Machine machine;
     private ItemStack blockItemstack = createItemstack(Material.OBSERVER, "§7§l* §6Item §eCollector §7§l*", createLore("§7§l§m------", "§7Place this item at the end of your conveyor belt to collect the items.", "", "§6Machine Data: §4INVALID COLLECTOR", "§7§l§m------"));
 
+    private boolean valid = true;
+    private int statItemsCollected = 0;
+
     public Collector(){}
     public Collector(Location location){
         this.location = location;
+        for (Machine machine : machineHashMap.values()){
+            if (compareLocations(machine.getCollector().getLocation(), location)){
+                this.machine = machine;
+                valid = compareLocations(machine.getCollector().getLocation(), location);
+            }
+        }
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     public Location getLocation() {
@@ -35,6 +52,7 @@ public class Collector {
     }
     public void addStorageItem(ItemStack itemStack) {
         this.storage.add(itemStack);
+        addStatItemsCollected(1);
     }
 
     public Machine getMachine() {
@@ -50,5 +68,15 @@ public class Collector {
     }
     public void setBlockItemstack(ItemStack blockItemstack) {
         this.blockItemstack = blockItemstack;
+    }
+
+    public int getStatItemsCollected() {
+        return statItemsCollected;
+    }
+    public void addStatItemsCollected(int amount) {
+        this.statItemsCollected += amount;
+    }
+    public void setStatItemsCollected(int statItemsCollected) {
+        this.statItemsCollected = statItemsCollected;
     }
 }

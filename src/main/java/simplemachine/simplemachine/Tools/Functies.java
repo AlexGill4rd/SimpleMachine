@@ -13,10 +13,7 @@ import simplemachine.simplemachine.Data.Configs;
 import simplemachine.simplemachine.SimpleMachine;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -158,6 +155,9 @@ public class Functies {
             return new Location(Bukkit.getWorld(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]), 0, 0);
         else return null;
     }
+    public static boolean compareLocations(Location location1, Location location2){
+        return convertLocationToString(location1).equals(convertLocationToString(location2));
+    }
     public static void saveData(){
         try {
             Configs.getCustomConfig2().save(customConfigFile2);
@@ -241,6 +241,16 @@ public class Functies {
         long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) * 60);
 
         return day + " d " + hours + " h " + minute + " m " + second + " s";
+    }
+    public static ItemStack getMostPopularItemstack(ArrayList<ItemStack> itemStacklist){
+        HashMap<ItemStack, Integer> population = new HashMap<>();
+        ArrayList<ItemStack> validItems = new ArrayList<>();
+        for (ItemStack itemStack : itemStacklist){
+            if (itemStack != null)validItems.add(itemStack);
+        }
+        validItems.forEach(itemStack -> population.put(itemStack, population.get(itemStack) + 1));
+        int highest = population.values().stream().mapToInt(i -> i).filter(i -> i >= 0).max().orElse(0);
+        return population.keySet().stream().filter(itemStack -> population.get(itemStack) == highest).findFirst().orElse(null);
     }
     public static ArrayList<ItemStack> getStackedItemstackList(ArrayList<ItemStack> list){
         Inventory inventory = Bukkit.createInventory(null, 54, "Counter");

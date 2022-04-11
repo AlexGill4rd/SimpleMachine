@@ -13,11 +13,11 @@ simplemachine\simplemachine\Components\Conveyor.class
 simplemachine\simplemachine\Listeners\InventoryListeners\ItemGeneratorInventoryClickListener.class
 simplemachine\simplemachine\Tools\Cuboid.class
 simplemachine\simplemachine\Commands\MachineCommand.class
+simplemachine\simplemachine\GUI\CollectorInventory.class
 simplemachine\simplemachine\Components\Machine.class
 simplemachine\simplemachine\Listeners\InventoryListeners\ItemGeneratorInventoryClickListener$1.class
 simplemachine\simplemachine\Components\Collector.class
 simplemachine\simplemachine\GUI\ItemGeneratorSpeedModifyInventory.class
 simplemachine\simplemachine\Components\Generator\Direction.class
-simplemachine\simplemachine\GUI\Inventories.class
 simplemachine\simplemachine\Tools\Cuboid$CuboidIterator.class
 simplemachine\simplemachine\Listeners\BlockBreakListener.class
