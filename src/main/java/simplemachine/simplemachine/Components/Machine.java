@@ -4,36 +4,17 @@ import org.bukkit.Location;
 import simplemachine.simplemachine.Data.Configs;
 
 import static simplemachine.simplemachine.SimpleMachine.machineHashMap;
-import static simplemachine.simplemachine.Tools.Functies.convertLocationToString;
-import static simplemachine.simplemachine.Tools.Functies.saveData;
+import static simplemachine.simplemachine.Tools.Functies.*;
 
 public class Machine {
 
     private ItemGenerator itemGenerator = new ItemGenerator();
-    private Collector collector = new Collector();
-    private Location location;
-    private boolean valid = true;
+    private Collector collector = new Collector(this);
+    private Location location = null;
 
     public Machine() {}
     public Machine(Location location){
         this.location = location;
-        checkValid();
-    }
-
-    public boolean isValid() {
-        return this.valid;
-    }
-    public void setValid(boolean valid) {
-        this.valid = valid;
-    }
-    public void checkValid(){
-        valid = machineHashMap.containsKey(location);
-        if (valid){
-            this.itemGenerator = machineHashMap.get(location).getItemGenerator();
-            this.collector = machineHashMap.get(location).getCollector();
-            this.itemGenerator.setMachine(this);
-            this.collector.setMachine(this);
-        }
     }
 
     public Location getLocation() {
@@ -57,9 +38,24 @@ public class Machine {
         this.collector = collector;
     }
 
+    public boolean isValid() {
+        return machineHashMap.containsKey(getLocation());
+    }
+
     public void remove(){
         Configs.getCustomConfig2().set("Machines." + convertLocationToString(this.getLocation()), null);
         saveData();
         machineHashMap.remove(this.getLocation());
+    }
+
+    public static Machine getFromLocation(Location location){
+        if (machineHashMap.containsKey(location))return machineHashMap.get(location);
+        else return new Machine(location);
+    }
+    public static Machine getMachineFromCollectorLocation(Location location){
+        for (Machine machine : machineHashMap.values()){
+            if (compareLocations(machine.getCollector().getLocation(), location))return machine;
+        }
+        return new Machine();
     }
 }

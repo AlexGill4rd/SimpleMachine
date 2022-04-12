@@ -11,30 +11,28 @@ import static simplemachine.simplemachine.Tools.Functies.*;
 
 public class Collector {
 
-    private Location location;
+    private Location location = null;
     private ArrayList<ItemStack> storage = new ArrayList<>();
-    private Machine machine;
-    private ItemStack blockItemstack = createItemstack(Material.OBSERVER, "§7§l* §6Item §eCollector §7§l*", createLore("§7§l§m------", "§7Place this item at the end of your conveyor belt to collect the items.", "", "§6Machine Data: §4INVALID COLLECTOR", "§7§l§m------"));
+    private Machine machine = null;
+    private ItemStack blockItemstack;
 
-    private boolean valid = true;
     private int statItemsCollected = 0;
 
     public Collector(){}
+    public Collector(Machine machine){
+        this.machine = machine;
+    }
     public Collector(Location location){
         this.location = location;
-        for (Machine machine : machineHashMap.values()){
-            if (compareLocations(machine.getCollector().getLocation(), location)){
-                this.machine = machine;
-                valid = compareLocations(machine.getCollector().getLocation(), location);
-            }
-        }
     }
 
-    public boolean isValid() {
-        return valid;
-    }
-    public void setValid(boolean valid) {
-        this.valid = valid;
+    public boolean isValid(){
+        if (this.location != null){
+            for (Machine machine : machineHashMap.values()){
+                if (machine.getCollector().getLocation().equals(this.getLocation()))return true;
+            }
+        }
+        return false;
     }
 
     public Location getLocation() {
@@ -54,16 +52,20 @@ public class Collector {
         this.storage.add(itemStack);
         addStatItemsCollected(1);
     }
-
+    public void removeStorageItem(ItemStack itemStack) {
+        this.storage.remove(itemStack);
+        addStatItemsCollected(1);
+    }
     public Machine getMachine() {
         return machine;
     }
     public void setMachine(Machine machine) {
         this.machine = machine;
-        blockItemstack = createItemstack(Material.OBSERVER, "§7§l* §6Item §eCollector §7§l*", createLore("§7§l§m------", "§7Place this item at the end of your conveyor belt to collect the items.", "", "§6Machine Data: §f" + convertLocationToString(machine.getLocation()), "§7§l§m------"));
     }
 
     public ItemStack getBlockItemstack() {
+        blockItemstack = createItemstack(Material.OBSERVER, "§7§l* §6Item §eCollector §7§l*", createLore("§7§l§m------", "§7Place this item at the end of your conveyor belt to collect the items.", "", "§6Machine Data: §f" + convertLocationToString(machine.getLocation()), "§7§l§m------"));
+
         return blockItemstack;
     }
     public void setBlockItemstack(ItemStack blockItemstack) {
@@ -78,5 +80,12 @@ public class Collector {
     }
     public void setStatItemsCollected(int statItemsCollected) {
         this.statItemsCollected = statItemsCollected;
+    }
+
+    public static Collector getFromLocation(Location location){
+        for (Machine machine : machineHashMap.values()){
+            if (compareLocations(machine.getCollector().getLocation(), location))return machine.getCollector();
+        }
+        return new Collector(location);
     }
 }

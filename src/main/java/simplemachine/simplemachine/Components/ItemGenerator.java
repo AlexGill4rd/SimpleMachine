@@ -30,7 +30,7 @@ public class ItemGenerator {
     private long statItemGeneratorAge = System.currentTimeMillis();
 
     private final SimpleMachine plugin = SimpleMachine.getPlugin(SimpleMachine.class);
-    private Machine machine;
+    private Machine machine = null;
 
     public ItemGenerator(){}
 
@@ -142,7 +142,7 @@ public class ItemGenerator {
     }
     void generateItem() {
         GenerateItem generateItem = new GenerateItem(this.product, this);
-        generateItem.setMachine(machine);
+        generateItem.setMachine(this.machine);
         generateItem.create();
         generateItem.startRouting();
         itemsActive.add(generateItem);

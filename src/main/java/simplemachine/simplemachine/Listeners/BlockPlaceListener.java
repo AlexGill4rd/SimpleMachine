@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import simplemachine.simplemachine.Components.Collector;
+import simplemachine.simplemachine.Components.ItemGenerator;
 import simplemachine.simplemachine.Components.Machine;
 
 import static simplemachine.simplemachine.Materials.Materials.*;
@@ -20,9 +22,12 @@ public class BlockPlaceListener implements Listener {
         if (e.getBlockPlaced().getType() == itemGeneratorMaterial){
             if (hasPerm(player, "SMachine.itemgenerator.place")){
                 Location machineLocation = e.getBlockPlaced().getLocation();
-                Machine machine = new Machine(machineLocation);
+                Machine machine = Machine.getFromLocation(machineLocation);
                 if (compareItemstack(machine.getItemGenerator().getItemGeneratorItemstack(),player.getInventory().getItemInMainHand())){
-                    machine.getItemGenerator().setLocation(machineLocation);
+                    ItemGenerator itemGenerator = new ItemGenerator();
+                    itemGenerator.setLocation(machineLocation);
+                    itemGenerator.setMachine(machine);
+                    machine.setItemGenerator(itemGenerator);
                     machineHashMap.put(machineLocation, machine);
                     player.sendMessage(getMessage("Item Generator Placed"));
                 }
@@ -30,12 +35,13 @@ public class BlockPlaceListener implements Listener {
         }else if (e.getBlockPlaced().getType() == collectorMaterial){
             if (hasPerm(player, "SMachine.collector.place")){
                 Location machineLocation = convertStringToLocation(player.getInventory().getItemInMainHand().getItemMeta().getLore().get(6));
-                Machine machine = new Machine(machineLocation);
-                System.out.println(machineLocation);
+                Machine machine = Machine.getFromLocation(machineLocation);
                 if (machine.isValid()){
                     if (compareItemstack(machine.getCollector().getBlockItemstack(), player.getInventory().getItemInMainHand())){
-                        machine.getCollector().setLocation(e.getBlockPlaced().getLocation());
-                        player.sendMessage(getMessage("Item Generator Placed"));
+                        Collector collector = new Collector(e.getBlockPlaced().getLocation());
+                        collector.setMachine(machine);
+                        machine.setCollector(collector);
+                        player.sendMessage(getMessage("Collector Placed"));
                     }
                 }else player.sendMessage(getMessage("Invalid Machine"));
             }

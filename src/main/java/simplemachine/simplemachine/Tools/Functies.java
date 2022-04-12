@@ -147,15 +147,18 @@ public class Functies {
         }
     }
     public static String convertLocationToString(Location location){
+        if (location == null)return null;
         return location.getWorld().getName() + "," + (int) location.getX() + "," + (int) location.getY() + "," + (int) location.getZ();
     }
     public static Location convertStringToLocation(String stringLoc){
+        if (stringLoc == null)return null;
         String[] args = ChatColor.stripColor(color(stringLoc)).split(",");
         if (args.length == 4)
             return new Location(Bukkit.getWorld(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]), 0, 0);
         else return null;
     }
     public static boolean compareLocations(Location location1, Location location2){
+        if (location1 == null || location2 == null)return  false;
         return convertLocationToString(location1).equals(convertLocationToString(location2));
     }
     public static void saveData(){

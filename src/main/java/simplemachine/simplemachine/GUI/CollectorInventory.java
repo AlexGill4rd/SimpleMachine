@@ -36,7 +36,6 @@ public class CollectorInventory {
         inventory.setItem(4, createItemstack(Material.CHEST, "§7§l- §6Inventory §7§l-", createLore("§7§l§m------", "§8Open the inventory where all the items produced by the machine are collected.", "§7§l§m------")));
         inventory.setItem(7, getBackItemstack());
 
-
         fillInv(inventory, 15);
 
         player.openInventory(inventory);

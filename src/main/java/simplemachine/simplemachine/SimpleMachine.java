@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import simplemachine.simplemachine.Commands.MachineCommand;
 import simplemachine.simplemachine.Components.*;
 import simplemachine.simplemachine.Data.Configs;
+import simplemachine.simplemachine.GUI.Handlers.NavigationHandler;
 import simplemachine.simplemachine.Listeners.BlockBreakListener;
 import simplemachine.simplemachine.Listeners.BlockInteractListener;
 import simplemachine.simplemachine.Listeners.BlockPlaceListener;
@@ -22,6 +23,7 @@ public final class SimpleMachine extends JavaPlugin {
 
     //Location is from the ItemGenerators location
     public static HashMap<Location, Machine> machineHashMap = new HashMap<>();
+    public static NavigationHandler navigationHandler = new NavigationHandler();
 
     @Override
     public void onEnable() {
@@ -106,6 +108,7 @@ public final class SimpleMachine extends JavaPlugin {
                 ArrayList<ItemStack> storageItems = (ArrayList<ItemStack>) Configs.getCustomConfig2().get("Machines." + machineLocation + ".Collector.Storage");
                 collector.setStorage(storageItems);
                 collector.setStatItemsCollected(Configs.getCustomConfig2().getInt("Machines." + machineLocation + ".Collector.Statistics.ItemsCollected"));
+
                 machine.setCollector(collector);
 
                 machineHashMap.put(convertStringToLocation(machineLocation), machine);

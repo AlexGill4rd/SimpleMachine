@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import simplemachine.simplemachine.Components.Collector;
 import simplemachine.simplemachine.Components.Machine;
 
 import java.util.Set;
@@ -41,7 +42,7 @@ public class MachineCommand implements CommandExecutor {
                             }
                         }else if (args[1].equalsIgnoreCase("collector")){
                             if (hasPerm(player, "SMachine.command.machine.get.collector")){
-                                Machine machine = new Machine(player.getTargetBlock(null, 5).getLocation());
+                                Machine machine = Machine.getFromLocation(player.getTargetBlock(null, 5).getLocation());
                                 if (machine.isValid()){
                                     player.getInventory().addItem(machine.getCollector().getBlockItemstack());
                                     player.sendMessage(getMessage("Collector Received"));
