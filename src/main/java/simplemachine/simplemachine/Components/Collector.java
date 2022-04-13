@@ -53,8 +53,8 @@ public class Collector {
         addStatItemsCollected(1);
     }
     public void removeStorageItem(ItemStack itemStack) {
+        this.storage = getStackedItemstackList(this.storage);
         this.storage.remove(itemStack);
-        addStatItemsCollected(1);
     }
     public Machine getMachine() {
         return machine;
@@ -80,6 +80,11 @@ public class Collector {
     }
     public void setStatItemsCollected(int statItemsCollected) {
         this.statItemsCollected = statItemsCollected;
+    }
+
+    public void remove(){
+        this.getLocation().getBlock().setType(Material.AIR);
+        this.getMachine().setCollector(new Collector(this.getMachine()));
     }
 
     public static Collector getFromLocation(Location location){

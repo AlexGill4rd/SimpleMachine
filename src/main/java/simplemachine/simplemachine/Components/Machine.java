@@ -1,6 +1,7 @@
 package simplemachine.simplemachine.Components;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import simplemachine.simplemachine.Data.Configs;
 
 import static simplemachine.simplemachine.SimpleMachine.machineHashMap;
@@ -8,7 +9,7 @@ import static simplemachine.simplemachine.Tools.Functies.*;
 
 public class Machine {
 
-    private ItemGenerator itemGenerator = new ItemGenerator();
+    private ItemGenerator itemGenerator = new ItemGenerator(this);
     private Collector collector = new Collector(this);
     private Location location = null;
 
@@ -43,6 +44,8 @@ public class Machine {
     }
 
     public void remove(){
+        if (this.getCollector().getLocation() != null)
+            this.getCollector().getLocation().getBlock().setType(Material.AIR);
         Configs.getCustomConfig2().set("Machines." + convertLocationToString(this.getLocation()), null);
         saveData();
         machineHashMap.remove(this.getLocation());
@@ -53,8 +56,13 @@ public class Machine {
         else return new Machine(location);
     }
     public static Machine getMachineFromCollectorLocation(Location location){
+
         for (Machine machine : machineHashMap.values()){
-            if (compareLocations(machine.getCollector().getLocation(), location))return machine;
+            if (machine.getCollector().isValid()){
+                if (compareLocations(machine.getCollector().getLocation(), location)){
+                    return machineHashMap.get(machine.getLocation());
+                }
+            }
         }
         return new Machine();
     }

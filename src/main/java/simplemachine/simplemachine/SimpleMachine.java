@@ -1,6 +1,7 @@
 package simplemachine.simplemachine;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import simplemachine.simplemachine.Commands.MachineCommand;
@@ -23,7 +24,7 @@ public final class SimpleMachine extends JavaPlugin {
 
     //Location is from the ItemGenerators location
     public static HashMap<Location, Machine> machineHashMap = new HashMap<>();
-    public static NavigationHandler navigationHandler = new NavigationHandler();
+    public static HashMap<Player, NavigationHandler> navigationHandlerHashMap = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -100,6 +101,7 @@ public final class SimpleMachine extends JavaPlugin {
                 float statItemsProduced = Configs.getCustomConfig2().getLong("Machines." + machineLocation + ".ItemGenerator.Statistics.ItemsProduced");
                 long statItemGeneratorAge = Configs.getCustomConfig2().getLong("Machines." + machineLocation + ".ItemGenerator.Statistics.Age");
                 ItemGenerator itemGenerator = new ItemGenerator(generateItem, fuelItem, fuelLevel, productionSpeed, enabled, location, statFuelUsed, statItemsProduced, statItemGeneratorAge);
+                itemGenerator.setMachine(machine);
                 machine.setItemGenerator(itemGenerator);
 
                 Collector collector = new Collector();
@@ -108,6 +110,7 @@ public final class SimpleMachine extends JavaPlugin {
                 ArrayList<ItemStack> storageItems = (ArrayList<ItemStack>) Configs.getCustomConfig2().get("Machines." + machineLocation + ".Collector.Storage");
                 collector.setStorage(storageItems);
                 collector.setStatItemsCollected(Configs.getCustomConfig2().getInt("Machines." + machineLocation + ".Collector.Statistics.ItemsCollected"));
+                collector.setMachine(machine);
 
                 machine.setCollector(collector);
 

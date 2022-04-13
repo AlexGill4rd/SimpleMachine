@@ -13,6 +13,7 @@ import simplemachine.simplemachine.Tools.Cuboid;
 import java.util.ArrayList;
 
 import static simplemachine.simplemachine.Materials.Materials.*;
+import static simplemachine.simplemachine.Tools.Functies.compareLocations;
 import static simplemachine.simplemachine.Tools.Functies.convertLocationToString;
 
 public class GenerateItem {
@@ -32,6 +33,7 @@ public class GenerateItem {
     public GenerateItem(ItemStack itemStack, ItemGenerator itemGenerator){
         this.itemstack = itemStack;
         this.location = itemGenerator.getLocation().clone().add(0.5, 0, 0.5);
+        this.machine = itemGenerator.getMachine();
     }
 
     public Machine getMachine() {
@@ -111,11 +113,12 @@ public class GenerateItem {
         }
     }
     public Collector detectCollector(Location location){
-        Cuboid cuboid = new Cuboid(location.clone().add(1, 0, 1), location.clone().add(-1, 0, -1));
+        Cuboid cuboid = new Cuboid(location.clone().add(1, 0, 1), location.clone().add(-1, 1, -1));
         for (Block block : cuboid.getBlocks()){
             if (block.getType() == collectorMaterial) {
-                if (machine.getCollector().getLocation() == block.getLocation())
-                    return new Collector(block.getLocation());
+                if (compareLocations(block.getLocation(), this.machine.getCollector().getLocation())) {
+                    return this.machine.getCollector();
+                }
             }
         }
         return null;

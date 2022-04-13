@@ -33,6 +33,9 @@ public class ItemGenerator {
     private Machine machine = null;
 
     public ItemGenerator(){}
+    public ItemGenerator(Machine machine){
+        this.machine = machine;
+    }
 
     public ItemGenerator(ItemStack generateItem, ItemStack fuelItem, float fuelLevel, float itemsPerHour, boolean enabled, Location location, float statFuelUsed, float statItemsProduced, long statItemGeneratorAge){
         this.product = generateItem;
@@ -142,7 +145,6 @@ public class ItemGenerator {
     }
     void generateItem() {
         GenerateItem generateItem = new GenerateItem(this.product, this);
-        generateItem.setMachine(this.machine);
         generateItem.create();
         generateItem.startRouting();
         itemsActive.add(generateItem);

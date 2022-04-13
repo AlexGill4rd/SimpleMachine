@@ -6,14 +6,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import simplemachine.simplemachine.Components.Collector;
 import simplemachine.simplemachine.Components.Machine;
 import simplemachine.simplemachine.GUI.CollectorInventory;
 import simplemachine.simplemachine.GUI.Handlers.NavigationHandler;
 import simplemachine.simplemachine.GUI.ItemGeneratorInventory;
 
 import static simplemachine.simplemachine.Materials.Materials.*;
-import static simplemachine.simplemachine.SimpleMachine.navigationHandler;
+import static simplemachine.simplemachine.SimpleMachine.navigationHandlerHashMap;
 import static simplemachine.simplemachine.Tools.Functies.*;
 
 public class BlockInteractListener implements Listener {
@@ -30,22 +29,22 @@ public class BlockInteractListener implements Listener {
                 if (!machine.isValid())return;
                 if (hasPerm(player, "SMachine.itemgenerator.interact")){
                     e.setCancelled(true);
+                    navigationHandlerHashMap.put(player, new NavigationHandler(player, machine));
                     ItemGeneratorInventory itemGeneratorInventory = new ItemGeneratorInventory(player, machine);
                     itemGeneratorInventory.openItemGeneratorMenu();
-                    navigationHandler.addMachineHandle(player, machine);
                 }
             }else if (e.getClickedBlock().getType() == collectorMaterial){
-                Collector collector = Collector.getFromLocation(e.getClickedBlock().getLocation());
                 Machine machine = Machine.getMachineFromCollectorLocation(e.getClickedBlock().getLocation());
 
-                if (!collector.isValid())return;
                 if (!machine.isValid())return;
+                if (!machine.getCollector().isValid())return;
 
                 if (hasPerm(player, "SMachine.collector.interact")){
                     e.setCancelled(true);
-                    CollectorInventory collectorInventory = new CollectorInventory(player, machine);
+                    navigationHandlerHashMap.put(player, new NavigationHandler(player, machine));
+                    CollectorInventory collectorInventory = new CollectorInventory(player);
                     collectorInventory.mainmenu();
-                    navigationHandler.addMachineHandle(player, machine);
+
                 }
             }
         }

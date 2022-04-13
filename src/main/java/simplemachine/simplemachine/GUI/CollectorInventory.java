@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import simplemachine.simplemachine.Components.Machine;
 import simplemachine.simplemachine.SimpleMachine;
 
+import static simplemachine.simplemachine.SimpleMachine.navigationHandlerHashMap;
 import static simplemachine.simplemachine.Tools.Functies.*;
 
 public class CollectorInventory {
@@ -17,9 +18,9 @@ public class CollectorInventory {
 
     SimpleMachine plugin = SimpleMachine.getPlugin(SimpleMachine.class);
 
-    public CollectorInventory(Player player, Machine machine){
+    public CollectorInventory(Player player){
         this.player = player;
-        this.machine = machine;
+        this.machine = navigationHandlerHashMap.get(player).getMachine();
     }
 
     public void mainmenu(){
