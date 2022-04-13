@@ -1,7 +1,9 @@
 package simplemachine.simplemachine.Components;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -50,10 +52,9 @@ public class Collector {
     }
     public void addStorageItem(ItemStack itemStack) {
         this.storage.add(itemStack);
-        addStatItemsCollected(1);
+        addStatItemsCollected();
     }
     public void removeStorageItem(ItemStack itemStack) {
-        this.storage = getStackedItemstackList(this.storage);
         this.storage.remove(itemStack);
     }
     public Machine getMachine() {
@@ -75,8 +76,8 @@ public class Collector {
     public int getStatItemsCollected() {
         return statItemsCollected;
     }
-    public void addStatItemsCollected(int amount) {
-        this.statItemsCollected += amount;
+    public void addStatItemsCollected() {
+        this.statItemsCollected++;
     }
     public void setStatItemsCollected(int statItemsCollected) {
         this.statItemsCollected = statItemsCollected;

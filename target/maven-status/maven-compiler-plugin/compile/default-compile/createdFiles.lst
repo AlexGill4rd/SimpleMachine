@@ -19,6 +19,7 @@ simplemachine\simplemachine\GUI\Handlers\NavigationHandler.class
 simplemachine\simplemachine\Components\Collector.class
 simplemachine\simplemachine\GUI\ItemGeneratorSpeedModifyInventory.class
 simplemachine\simplemachine\Components\Generator\Direction.class
+simplemachine\simplemachine\Tools\Matrix.class
 simplemachine\simplemachine\Listeners\InventoryListeners\InventoryClickListener$1.class
 simplemachine\simplemachine\Tools\Cuboid$CuboidIterator.class
 simplemachine\simplemachine\Listeners\BlockBreakListener.class

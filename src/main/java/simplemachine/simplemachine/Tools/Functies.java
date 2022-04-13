@@ -260,4 +260,9 @@ public class Functies {
         list.stream().filter(Objects::nonNull).forEach(inventory::addItem);
         return Arrays.stream(inventory.getContents()).filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new));
     }
+    public static void fillRowItemstack(Inventory inventory, int row, Material itemstack){
+        for (int i = 0; i < 9; i++) {
+            inventory.setItem((row*9)-9+i, createItemstack(itemstack, " ", null));
+        }
+    }
 }

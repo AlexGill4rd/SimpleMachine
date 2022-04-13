@@ -18,7 +18,7 @@ public class ItemGenerator {
     private ItemStack product = createItemstack(Material.BARRIER, "§7none", null);
     private ItemStack fuelItem = defaultMachineFuel;
     private float fuelLevel = 100;
-    private float itemsPerHour = 3600;
+    private float itemsPerHour = 1500;
     private boolean enabled = false;
 
     private ArrayList<GenerateItem> itemsActive = new ArrayList<>();
@@ -107,8 +107,8 @@ public class ItemGenerator {
     public void setStatItemsProduced(long statItemsProduced) {
         this.statItemsProduced = statItemsProduced;
     }
-    public void addStatItemsProduced(long amount) {
-        this.statItemsProduced += amount;
+    public void addStatItemProduced() {
+        this.statItemsProduced++;
     }
 
     public long getStatItemGeneratorAge() {
@@ -137,7 +137,7 @@ public class ItemGenerator {
                 if (!enabled) {
                     Bukkit.getScheduler().cancelTask(producing);
                 }else generateItem();
-            }, 0, (long) (itemsPerHour / 60 / 60) * 20);
+            }, 0, (long) (20f/(this.getItemsPerHour()/60f/60f)));
         }
     }
     public void stop(){

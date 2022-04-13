@@ -7,6 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import simplemachine.simplemachine.Components.Machine;
 import simplemachine.simplemachine.SimpleMachine;
+import simplemachine.simplemachine.Tools.Matrix;
 
 import static simplemachine.simplemachine.SimpleMachine.navigationHandlerHashMap;
 import static simplemachine.simplemachine.Tools.Functies.*;
@@ -17,6 +18,7 @@ public class CollectorInventory {
     private final Machine machine;
 
     SimpleMachine plugin = SimpleMachine.getPlugin(SimpleMachine.class);
+    private int updater;
 
     public CollectorInventory(Player player){
         this.player = player;
@@ -38,18 +40,49 @@ public class CollectorInventory {
         inventory.setItem(7, getBackItemstack());
 
         fillInv(inventory, 15);
-
         player.openInventory(inventory);
+
+        updater = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            if (player.getOpenInventory().getTopInventory().getTitle().equals("§7§l| §7§lCollector §7- §8Main menu §7§l|")){
+                inventory.clear();
+                inventory.setItem(1, createItemstack(Material.PAPER,
+                        "§7§l- §6Collector Information §7§l-",
+                        createLore("§7§l§m------",
+                                "§8Items Collected: §f" + machine.getCollector().getStatItemsCollected(),
+                                "§8Current item count: §f" + countItemsInList(machine.getCollector().getStorage()),
+                                "§8Most items from: §f",
+                                "§7§l§m------")));
+
+                inventory.setItem(4, createItemstack(Material.CHEST, "§7§l- §6Inventory §7§l-", createLore("§7§l§m------", "§8Open the inventory where all the items produced by the machine are collected.", "§7§l§m------")));
+                inventory.setItem(7, getBackItemstack());
+
+                fillInv(inventory, 15);
+            }else Bukkit.getScheduler().cancelTask(updater);
+        }, 20, 20);
+
     }
     public void inventory(){
         Inventory inventory = Bukkit.createInventory(null, 36, "§7§l| §7§lCollector §7- §8Inventory §7§l|");
+
+        fillRowItemstack(inventory, 4, Material.ANVIL);
 
         for (ItemStack itemStack : machine.getCollector().getStorage())
             inventory.addItem(itemStack);
 
         inventory.setItem(35, getBackItemstack());
-
         player.openInventory(inventory);
+
+        updater = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            if (player.getOpenInventory().getTopInventory().getTitle().equals("§7§l| §7§lCollector §7- §8Inventory §7§l|")){
+                inventory.clear();
+                fillRowItemstack(inventory, 4, Material.ANVIL);
+
+                for (ItemStack itemStack : machine.getCollector().getStorage())
+                    inventory.addItem(itemStack);
+
+                inventory.setItem(35, getBackItemstack());
+            }else Bukkit.getScheduler().cancelTask(updater);
+        }, 20, 20);
     }
 
 }

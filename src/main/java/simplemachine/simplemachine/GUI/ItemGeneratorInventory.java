@@ -36,7 +36,7 @@ public class ItemGeneratorInventory {
                 inventory.setItem(4, editItemMeta(machine.getItemGenerator().getProduct(), "§7§l► §6Current §7Product §7§l◄", createArraylist("§6§l§m§l-----", "§7The current item the machine", "§7produces", "§6§l§m§l-----")));
                 inventory.setItem(7, createItemstack(Material.REDSTONE, "§7§l► §6Statistics §7§l◄", createArraylist("§7A list of all the machine statistics",
                         "§6§l§m§l-----",
-                        "§7Items generated: §f" + (int) (machine.getItemGenerator().getStatItemsProduced()),
+                        "§7Items generated: §f" + machine.getItemGenerator().getStatItemsProduced(),
                         "§7Fuel Used: §f" + machine.getItemGenerator().getStatFuelUsed(),
                         "§7Machine Age: §f" + calculateTime((System.currentTimeMillis() - machine.getItemGenerator().getStatItemGeneratorAge()) / 1000),
                         "§7Machine Location:§f " + convertLocationToString(machine.getLocation()),
@@ -46,7 +46,7 @@ public class ItemGeneratorInventory {
                 else inventory.setItem(17, createItemstack(Material.RED_SHULKER_BOX, "§7§l► §aStop Machine §7§l◄", createArraylist("§6§l§m§l-----", "§7Press this button to", "§7turn the machine off", "§6§l§m§l-----")));
                 fillInv(inventory, 15);
             }else Bukkit.getScheduler().cancelTask(updater);
-        }, 0, 10);
+        }, 0, 20);
     }
 
 }

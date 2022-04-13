@@ -11,6 +11,7 @@ import simplemachine.simplemachine.Components.Machine;
 import simplemachine.simplemachine.GUI.CollectorInventory;
 import simplemachine.simplemachine.GUI.Handlers.NavigationHandler;
 import simplemachine.simplemachine.GUI.ItemGeneratorSpeedModifyInventory;
+import simplemachine.simplemachine.Tools.Matrix;
 
 import static simplemachine.simplemachine.SimpleMachine.navigationHandlerHashMap;
 import static simplemachine.simplemachine.Tools.Functies.*;
@@ -78,7 +79,9 @@ public class InventoryClickListener implements Listener {
             if (e.getSlot() == 35) collectorInventory.mainmenu();
             else {
                 giveItemToPlayer(player, clickedItem);
-                machine.getCollector().removeStorageItem(clickedItem);
+                clickedItem.setAmount(0);
+                Matrix matrix = new Matrix(9, 3);
+                machine.getCollector().setStorage(matrix.getInventoryItems(e.getClickedInventory()));
                 collectorInventory.inventory();
             }
             if (clickedItem.getType() == Material.ARROW) {
