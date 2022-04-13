@@ -73,6 +73,9 @@ public class InventoryClickListener implements Listener {
         }else if (e.getInventory().getTitle().equals("§7§l| §7§lCollector §7- §8Inventory §7§l|")){
             e.setCancelled(true);
 
+            Matrix anvils = new Matrix(27, 34);
+            if (anvils.fromInventory(e.getClickedInventory()).contains(e.getSlot()))return;
+
             Machine machine = navigationHandlerHashMap.get(player).getMachine();
             CollectorInventory collectorInventory = new CollectorInventory(player);
 
@@ -80,7 +83,7 @@ public class InventoryClickListener implements Listener {
             else {
                 giveItemToPlayer(player, clickedItem);
                 clickedItem.setAmount(0);
-                Matrix matrix = new Matrix(9, 3);
+                Matrix matrix = new Matrix(0, 26);
                 machine.getCollector().setStorage(matrix.getInventoryItems(e.getClickedInventory()));
                 collectorInventory.inventory();
             }

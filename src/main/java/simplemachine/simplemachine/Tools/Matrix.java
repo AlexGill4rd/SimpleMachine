@@ -3,7 +3,7 @@ package simplemachine.simplemachine.Tools;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class Matrix {
 
@@ -17,22 +17,38 @@ public class Matrix {
     /**
      *Een methode om de slot integers te krijgen van een matrix in een inventaris
      */
-    public Integer[] fromInventory(){
-        Integer[] matrix = new Integer[this.x * this.y];
-        int row = 1;
-        int index = 0;
-        for (int i = 0; i < 54; i++){
-            if (index >= this.x*this.y)break;
-            if ((i % 9) == 0 && i != 0)row++;
-            if (i >= (9 * row) - (9-this.x))continue;
-            matrix[index] = i;
-            index++;
+    public ArrayList<Integer> fromInventory(Inventory inventory){
+        //Integer is row Arraylist is slots
+        ArrayList<Integer>[] rows = new ArrayList[inventory.getSize() / 9];
+        ArrayList<Integer> slots = new ArrayList<>();
+        int rowCount = 0;
+        for (int i = 0; i < inventory.getSize(); i++){
+            slots.add(i);
+            if (slots.size() >= 9){
+                rows[rowCount] = slots;
+            }
+            if ((i % 9) == 0 && i != 0) rowCount++;
         }
-        return matrix;
+        int minIndex = 0;
+        int maxIndex = 0;
+        //Loop over all rows
+        for (ArrayList<Integer> row : rows){
+            if (row.contains(this.x))minIndex = row.indexOf(this.x);
+            if (row.contains(this.y))maxIndex = row.indexOf(this.y);
+        }
+        //End slots validating
+        ArrayList<Integer> validSlots = new ArrayList<>();
+        for (ArrayList<Integer> row : rows){
+            for (Integer i : row){
+                if (row.indexOf(i) >= minIndex && row.indexOf(i) <= maxIndex)validSlots.add(i);
+            }
+        }
+        Set<Integer> hashSet = new LinkedHashSet(validSlots);
+        return new ArrayList(hashSet);
     }
     public ArrayList<ItemStack> getInventoryItems(Inventory inventory){
         ArrayList<ItemStack> items = new ArrayList<>();
-        for (int i : fromInventory()){
+        for (Integer i : fromInventory(inventory)){
             if (inventory.getItem(i) != null)items.add(inventory.getItem(i));
         }
         return items;
