@@ -17,6 +17,7 @@ public class Collector {
     private ArrayList<ItemStack> storage = new ArrayList<>();
     private Machine machine = null;
     private ItemStack blockItemstack;
+    public final int maxCollectorSize = 27;
 
     private int statItemsCollected = 0;
 
@@ -45,7 +46,7 @@ public class Collector {
     }
 
     public ArrayList<ItemStack> getStorage() {
-        return storage;
+        return getStackedItemstackList(this.storage);
     }
     public void setStorage(ArrayList<ItemStack> storage) {
         this.storage = storage;

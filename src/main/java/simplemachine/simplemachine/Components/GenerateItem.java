@@ -113,7 +113,9 @@ public class GenerateItem {
                     if (collector != null)
                         collector.addStorageItem(itemstack);
                     armorStandItem.remove();
+                    this.machine.getItemGenerator().removeActiveItem(this);
                 }, 20);
+
                 Bukkit.getScheduler().cancelTask(routingID);
             } else {
                 moveItem(conveyor.getLocation(), 1);

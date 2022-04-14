@@ -23,14 +23,14 @@ public class BlockInteractListener implements Listener {
         Player player = e.getPlayer();
 
         if (e.getHand() == EquipmentSlot.OFF_HAND)return;
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK){
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK && !player.isSneaking()){
             if (e.getClickedBlock().getType() == itemGeneratorMaterial){
                 Machine machine = Machine.getFromLocation(e.getClickedBlock().getLocation());
                 if (!machine.isValid())return;
                 if (hasPerm(player, "SMachine.itemgenerator.interact")){
                     e.setCancelled(true);
                     navigationHandlerHashMap.put(player, new NavigationHandler(player, machine));
-                    ItemGeneratorInventory itemGeneratorInventory = new ItemGeneratorInventory(player, machine);
+                    ItemGeneratorInventory itemGeneratorInventory = new ItemGeneratorInventory(player);
                     itemGeneratorInventory.openItemGeneratorMenu();
                 }
             }else if (e.getClickedBlock().getType() == collectorMaterial){

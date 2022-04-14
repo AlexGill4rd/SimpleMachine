@@ -115,6 +115,7 @@ public final class SimpleMachine extends JavaPlugin {
                 machine.setCollector(collector);
 
                 machineHashMap.put(convertStringToLocation(machineLocation), machine);
+                if (machine.getItemGenerator().isEnabled())machine.getItemGenerator().start();
             }
         }
     }

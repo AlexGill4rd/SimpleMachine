@@ -15,7 +15,8 @@ public class ItemGenerator {
 
     private final ItemStack itemGeneratorItemstack = createItemstack(itemGeneratorMaterial, "§7§l* §6Item Generator §7§l*", createArraylist("§8§l§m------", "§7Place this item to create a §6ITEM GENERATOR", "§fRight-Click §8- §7To place down", "§8§l§m------"));
 
-    private ItemStack product = createItemstack(Material.BARRIER, "§7none", null);
+    private ItemStack defaultProduct = createItemstack(Material.BARRIER, "§7none", null);
+    private ItemStack product = defaultProduct;
     private ItemStack fuelItem = defaultMachineFuel;
     private float fuelLevel = 100;
     private float itemsPerHour = 1500;
@@ -63,7 +64,9 @@ public class ItemGenerator {
         return product;
     }
     public void setProduct(ItemStack product) {
-        this.product = product;
+        if (product == null)
+            this.product = defaultProduct;
+        else this.product = getItemstackTemplate(product);
     }
 
     public ItemStack getFuelItem() {
@@ -118,6 +121,9 @@ public class ItemGenerator {
     public ArrayList<GenerateItem> getItemsActive() {
         return itemsActive;
     }
+    public void removeActiveItem(GenerateItem generateItem) {
+        this.itemsActive.remove(generateItem);
+    }
     public void setItemsActive(ArrayList<GenerateItem> itemsActive) {
         this.itemsActive = itemsActive;
     }
@@ -144,10 +150,12 @@ public class ItemGenerator {
         enabled = false;
     }
     void generateItem() {
-        GenerateItem generateItem = new GenerateItem(this.product, this);
-        generateItem.create();
-        generateItem.startRouting();
-        itemsActive.add(generateItem);
+        if (this.machine.getCollector().getStorage().size() + getItemsActive().size() < this.machine.getCollector().maxCollectorSize){
+            GenerateItem generateItem = new GenerateItem(this.product, this);
+            generateItem.create();
+            generateItem.startRouting();
+            itemsActive.add(generateItem);
+        }else this.enabled = false;
     }
     public boolean isReady() {
         return product != null &&

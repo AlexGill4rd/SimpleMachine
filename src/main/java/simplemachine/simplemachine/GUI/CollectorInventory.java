@@ -7,7 +7,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import simplemachine.simplemachine.Components.Machine;
 import simplemachine.simplemachine.SimpleMachine;
-import simplemachine.simplemachine.Tools.Matrix;
 
 import static simplemachine.simplemachine.SimpleMachine.navigationHandlerHashMap;
 import static simplemachine.simplemachine.Tools.Functies.*;
@@ -58,7 +57,7 @@ public class CollectorInventory {
 
                 fillInv(inventory, 15);
             }else Bukkit.getScheduler().cancelTask(updater);
-        }, 20, 20);
+        }, 1, 20);
 
     }
     public void inventory(){
@@ -82,7 +81,7 @@ public class CollectorInventory {
 
                 inventory.setItem(35, getBackItemstack());
             }else Bukkit.getScheduler().cancelTask(updater);
-        }, 20, 20);
+        }, 1, 20);
     }
 
 }
